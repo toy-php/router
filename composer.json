@@ -1,0 +1,19 @@
+{
+  "name": "toy-php/router",
+  "description": "Маршрутизатор",
+  "license": "mit",
+  "authors": [
+    {
+      "name": "Seytumerov Mustafa",
+      "email": "seymus007@gmail.com"
+    }
+  ],
+  "require": {
+    "psr/http-message": "^1.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "": ["src/"]
+    }
+  }
+}
