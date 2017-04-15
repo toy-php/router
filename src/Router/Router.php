@@ -62,10 +62,14 @@ class Router
      * Запуск пред-маршрута
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
+     * @param \ArrayAccess $dependencyContainer
      * @return ResponseInterface
      * @throws Exception
      */
-    protected function runPreRoute(ServerRequestInterface $request, ResponseInterface $response)
+    protected function runPreRoute(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        \ArrayAccess $dependencyContainer)
     {
         $queryString = $request->getMethod() . $request->getUri()->getPath();
         $shortQueryString = $request->getUri()->getPath();
@@ -80,7 +84,7 @@ class Router
                     $shortQueryString
                 )
             ) {
-                $response = $handler($request, $response, $this);
+                $response = $handler($request, $response, $dependencyContainer);
                 if (!$response instanceof ResponseInterface) {
                     throw new Exception('Пред-маршрут не возвращает необходимый интерфейс');
                 }
@@ -94,10 +98,14 @@ class Router
      * Запуск маршрутизатора
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
+     * @param \ArrayAccess $dependencyContainer
      * @return ResponseInterface
      * @throws Exception
      */
-    public function run(ServerRequestInterface $request, ResponseInterface $response)
+    protected function run(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        \ArrayAccess $dependencyContainer)
     {
         $queryString = $request->getMethod() . $request->getUri()->getPath();
         $routs = $this->parseRouts($this->routs);
@@ -110,8 +118,8 @@ class Router
             ) {
                 array_shift($matches);
                 $request = $this->addAttributes($request, $matches);
-                $response = $this->runPreRoute($request, $response);
-                $response = $handler($request, $response, $this);
+                $response = $this->runPreRoute($request, $response, $dependencyContainer);
+                $response = $handler($request, $response, $dependencyContainer);
                 if (!$response instanceof ResponseInterface) {
                     throw new Exception('Маршрут не возвращает необходимый интерфейс');
                 }
