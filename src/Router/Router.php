@@ -102,7 +102,7 @@ class Router
      * @return ResponseInterface
      * @throws Exception
      */
-    protected function run(
+    public function run(
         ServerRequestInterface $request,
         ResponseInterface $response,
         \ArrayAccess $dependencyContainer)
