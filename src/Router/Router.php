@@ -88,7 +88,6 @@ class Router
                 if (!$response instanceof ResponseInterface) {
                     throw new Exception('Пред-маршрут не возвращает необходимый интерфейс');
                 }
-                return $response;
             }
         }
         return $response;
