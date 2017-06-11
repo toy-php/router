@@ -2,6 +2,8 @@
 
 namespace Router;
 
+use Middleware\Middleware;
+
 class Controller
 {
 
@@ -15,14 +17,20 @@ class Controller
     /**
      * Назначение экшна для роутера
      * @param $action
-     * @return \Closure
+     * @return Middleware
      */
     public static function bind($action)
     {
-        return function ($request, $response, $app) use ($action) {
-            $class = new static($app);
+        return (new Middleware(function ($request, $response, $app) use ($action) {
+            $controller = new static($app);
             $method = $action . 'Action';
-            return $class->$method($request, $response);
-        };
+            return $controller->$method($request, $response);
+        }))->withBehavior(function ($callable, $next) {
+            return function () use ($callable, $next) {
+                $arguments = func_get_args();
+                $arguments[] = $next;
+                return $callable(...$arguments);
+            };
+        });
     }
 }

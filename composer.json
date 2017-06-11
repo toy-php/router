@@ -8,12 +8,21 @@
       "email": "seymus007@gmail.com"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/toy-php/middleware"
+    }
+  ],
   "require": {
+    "toy-php/middleware": "dev-master",
     "psr/http-message": "^1.0"
   },
   "autoload": {
     "psr-0": {
-      "": ["src/"]
+      "": [
+        "src/"
+      ]
     }
   }
 }
